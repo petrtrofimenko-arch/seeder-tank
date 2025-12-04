@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeder Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Seeder Calculator</h1>
+
+        <!-- Выбор языка -->
+        <div class="step">
+            <label>Выберите язык / Select Language:</label>
+            <select id="language">
+                <option value="ru">Русский</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+
+        <!-- Норма высева семян -->
+        <div class="step">
+            <label>Норма высева семян (кг/га):</label>
+            <input type="number" id="seedRate" min="1" step="0.1">
+        </div>
+
+        <!-- Тип семян -->
+        <div class="step">
+            <label>Выберите культуру / Select Seed:</label>
+            <select id="seedType">
+                <option value="wheat">Пшеница / Wheat</option>
+                <option value="rye">Рожь / Rye</option>
+                <option value="oats">Овёс / Oats</option>
+                <option value="soy">Соя / Soy</option>
+                <option value="chickpea">Нут / Chickpea</option>
+                <option value="lentil">Чечевица / Lentil</option>
+                <option value="pea">Горох / Pea</option>
+                <option value="rapeseed">Рапс / Rapeseed</option>
+                <option value="flax">Лён / Flax</option>
+            </select>
+        </div>
+
+        <!-- Норма удобрений -->
+        <div class="step">
+            <label>Норма удобрений (кг/га):</label>
+            <input type="number" id="fertRate" min="1" step="0.1">
+        </div>
+
+        <!-- Тип удобрений -->
+        <div class="step">
+            <label>Выберите тип удобрений / Fertilizer Type:</label>
+            <select id="fertType">
+                <option value="ammonium">Аммиачная селитра / Ammonium nitrate</option>
+                <option value="dap">Диаммофос / DAP</option>
+                <option value="npk">Нитроаммофоска / NPK</option>
+                <option value="urea">Карбамид / Urea</option>
+                <option value="sa">Сульфат аммония / Ammonium sulfate</option>
+                <option value="superphosphate">Суперфосфат гранулированный / Superphosphate</option>
+            </select>
+        </div>
+
+        <!-- Конфигурация бункера -->
+        <div class="step">
+            <label>Секции бункера / Hopper Sections:</label>
+
+            <div class="section">
+                <label>Секция 1:</label>
+                <select class="hopperSection">
+                    <option value="seed">Семена / Seeds</option>
+                    <option value="fert">Удобрения / Fertilizer</option>
+                </select>
+            </div>
+
+            <div class="section">
+                <label>Секция 2:</label>
+                <select class="hopperSection">
+                    <option value="seed">Семена / Seeds</option>
+                    <option value="fert">Удобрения / Fertilizer</option>
+                </select>
+            </div>
+
+            <div class="section">
+                <label>Секция 3:</label>
+                <select class="hopperSection">
+                    <option value="seed">Семена / Seeds</option>
+                    <option value="fert">Удобрения / Fertilizer</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="calculateBtn">Рассчитать / Calculate</button>
+
+        <div id="results"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
