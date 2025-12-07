@@ -1,5 +1,6 @@
 const hopperVolumes = [2250, 1650, 2250];
 
+// Плотности семян (кг/л)
 const seedDensities = {
     wheat: 0.75,
     rapeseed: 0.70,
@@ -8,14 +9,20 @@ const seedDensities = {
     corn: 0.72,
     lentil: 0.67,
     flax: 0.62,
-    barley: 0.61
+    barley: 0.61,
+    soy: 0.72,
+    chickpea: 0.82,
+    rye: 0.72
 };
 
+// Плотности удобрений (кг/л)
 const fertDensities = {
-    ammonium: 0.73,
-    ammophos: 0.85,
-    superphosphate: 0.95,
-    nitroammophos: 1.05
+    ammonium: 0.73,           // Аммиачная селитра
+    superphosphate: 0.95,    // Суперфосфат гранулированный
+    dap: 0.85,               // Диаммофос (АММОФОС)
+    npk: 1.05,               // Нитроаммофоска
+    urea: 0.75,              // Карбамид (прибл. плотность)
+    sa: 0.96                 // Сульфат аммония
 };
 
 document.getElementById('calculateBtn').addEventListener('click', () => {
@@ -30,24 +37,23 @@ document.getElementById('calculateBtn').addEventListener('click', () => {
 
     const resultsDiv = document.getElementById('results');
 
-    // Валидация
-    if (
-        isNaN(seedRateInput) || !seedType ||
+    if (isNaN(seedRateInput) || !seedType ||
         isNaN(fertRateInput) || !fertType ||
-        hopperSections.length !== 3 || hopperSections.some(v => !v)
-    ) {
+        hopperSections.length !== 3 || hopperSections.some(v => !v)) {
         resultsDiv.innerHTML = `<span style="color:red">Пожалуйста, заполните все поля / Please fill in all fields</span>`;
         return;
     }
 
-    // Считаем вес каждой секции
     const sectionData = hopperSections.map((type, i) => {
-        const density = type === 'seed' ? seedDensities[seedType] : fertDensities[fertType];
+        const density = type === 'seed'
+            ? seedDensities[seedType]
+            : fertDensities[fertType];
+
         const weight = hopperVolumes[i] * density;
+
         return { index: i, type, volume: hopperVolumes[i], density, weight };
     });
 
-    // Функция расчёта индивидуальной нормы для секций одного типа
     function calculateSectionRates(sections, totalRateInput) {
         const totalWeight = sections.reduce((sum, s) => sum + s.weight, 0);
         sections.forEach(sec => {
@@ -59,10 +65,9 @@ document.getElementById('calculateBtn').addEventListener('click', () => {
     const seedSections = sectionData.filter(s => s.type === 'seed');
     const fertSections = sectionData.filter(s => s.type === 'fert');
 
-    calculateSectionRates(seedSections, seedRateInput);
-    calculateSectionRates(fertSections, fertRateInput);
+    if (seedSections.length > 0) calculateSectionRates(seedSections, seedRateInput);
+    if (fertSections.length > 0) calculateSectionRates(fertSections, fertRateInput);
 
-    // Вывод результатов с дублированием русский/английский
     let output = `<strong>Секция / Hopper Section Distribution:</strong><br><br>`;
     sectionData.forEach(sec => {
         const typeLabel = sec.type === 'seed' ? `Семена / Seed` : `Удобрение / Fertilizer`;
@@ -70,7 +75,7 @@ document.getElementById('calculateBtn').addEventListener('click', () => {
         output += `&nbsp;&nbsp;Объём / Volume: ${sec.volume} l<br>`;
         output += `&nbsp;&nbsp;Плотность / Density: ${sec.density} кг/л<br>`;
         output += `&nbsp;&nbsp;Вместимость / Capacity: ${sec.weight.toFixed(1)} кг<br>`;
-        output += `&nbsp;&nbsp;Норма высева / Rate: ${sec.proportionalRate.toFixed(1)} кг/га<br>`;
+        output += `&nbsp;&nbsp;Норма / Rate: ${sec.proportionalRate.toFixed(1)} кг/га<br>`;
         output += `&nbsp;&nbsp;Хватит на / Covers: ${sec.hectares.toFixed(1)} га<br><br>`;
     });
 
